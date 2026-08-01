@@ -22,14 +22,12 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Собрать XCFramework из :shared через Gradle
-        run: ./gradlew :shared:embedAndSignAppleFrameworkForXcode
-        env:
-          CONFIGURATION: Release
-          SDK_NAME: iphoneos
-          PLATFORM_NAME: iphoneos
-
       - name: Архивировать iOS-приложение без подписи
+        # Сборка :shared в XCFramework запускается автоматически из самого
+        # Xcode-проекта (Run Script build phase "Compile Kotlin"), поэтому
+        # Xcode сам передаёт Gradle-таску embedAndSignAppleFrameworkForXcode
+        # полный набор переменных (ARCHS и т.д.) — отдельным шагом их
+        # правильно не воспроизвести.
         run: |
           xcodebuild archive \
             -project iosApp/iosApp.xcodeproj \
