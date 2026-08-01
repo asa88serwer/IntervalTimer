@@ -3,7 +3,7 @@ name: iOS build (unsigned IPA)
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [ master ]
     paths:
       - 'shared/**'
       - 'iosApp/**'
