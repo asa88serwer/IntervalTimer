@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Кнопка секундомера -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M48,18 h12 v10 h-12 z" />
+    <!-- Циферблат -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="6"
+        android:fillColor="#00000000"
+        android:pathData="M28,60 a26,26 0 1,0 52,0 a26,26 0 1,0 -52,0" />
+    <!-- Минутная стрелка -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"
+        android:pathData="M54,60 L54,40" />
+    <!-- Часовая стрелка -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"
+        android:pathData="M54,60 L68,60" />
+</vector>

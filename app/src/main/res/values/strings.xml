@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">IntervalTime</string>
+    <string name="notification_channel_name">Таймер</string>
+    <string name="notification_channel_description">Уведомления о ходе таймера/секундомера</string>
+</resources>

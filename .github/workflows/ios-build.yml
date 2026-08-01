@@ -1,0 +1,58 @@
+name: iOS build (unsigned IPA)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths:
+      - 'shared/**'
+      - 'iosApp/**'
+      - '.github/workflows/ios-build.yml'
+
+jobs:
+  build-ios:
+    runs-on: macos-15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Собрать XCFramework из :shared через Gradle
+        run: ./gradlew :shared:embedAndSignAppleFrameworkForXcode
+        env:
+          CONFIGURATION: Release
+          SDK_NAME: iphoneos
+          PLATFORM_NAME: iphoneos
+
+      - name: Архивировать iOS-приложение без подписи
+        run: |
+          xcodebuild archive \
+            -project iosApp/iosApp.xcodeproj \
+            -scheme iosApp \
+            -sdk iphoneos \
+            -archivePath "$RUNNER_TEMP/IntervalTime.xcarchive" \
+            -destination 'generic/platform=iOS' \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            DEVELOPMENT_TEAM=""
+
+      - name: Упаковать в IPA (без подписи — подпись будет через AltServer/Sideloadly)
+        run: |
+          cd "$RUNNER_TEMP"
+          mkdir -p Payload
+          cp -r "IntervalTime.xcarchive/Products/Applications/IntervalTime.app" Payload/
+          zip -r IntervalTime.ipa Payload
+          mv IntervalTime.ipa "$GITHUB_WORKSPACE/IntervalTime.ipa"
+
+      - name: Опубликовать IPA как артефакт сборки
+        uses: actions/upload-artifact@v4
+        with:
+          name: IntervalTime-unsigned-ipa
+          path: IntervalTime.ipa
+          retention-days: 14
